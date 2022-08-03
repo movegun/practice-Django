@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Register - SB Admin</title>
+        {% load static %}
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script> 
+        {% load static %}       
+        <script src="{% static 'js/trim.js' %}"></script>
+        <script language="javascript">
+            // content, cate, index를 인수로 받아 form 태그로 전송하는 함수
+            function check() {               
+                var userid = f.userid.value;
+                userid = trim(userid);
+                if(userid.length == 0){
+                    alert("아이디를 입력해주세요");
+                    f.userid.value = "";
+                    f.userid.focus();
+                    return false;
+	        	}else{  
+                    pass = checkByteLen(userid, 50);
+                    if(!pass){
+                        alert("아이디가 너무 길어요");
+                        f.userid.focus();
+                        return false;
+                    }
+		        }
+                var username = f.username.value;
+                username = trim(username);
+                if(username.length == 0){
+                    alert("닉네임을 입력해주세요");
+                    f.username.value = "";
+                    f.username.focus();
+                    return false;
+	        	}else{  
+                    pass = checkByteLen(username, 50);
+                    if(!pass){
+                        alert("닉네임이 너무 길어요");
+                        f.username.focus();
+                        return false;
+                    }
+		        }
+                var pwd1 = f.pwd1.value;
+                pwd1 = trim(pwd1);
+                if(pwd1.length == 0){
+                    alert("비밀번호를 입력해주세요");
+                    f.pwd1.value = "";
+                    f.pwd1.focus();
+                    return false;
+	        	}else{  
+                    pass = checkByteLen(pwd1, 50);
+                    if(!pass){
+                        alert("비밀번호가 너무 길어요");
+                        f.pwd1.focus();
+                        return false;
+                    }
+		        }
+                var pwd2 = f.pwd2.value;
+                pwd2 = trim(pwd2);
+                if(pwd2.length == 0){
+                    alert("비밀번호확인을 입력해주세요");
+                    f.pwd2.value = "";
+                    f.pwd2.focus();
+                    return false;
+	        	}else{  
+                    pass = checkByteLen(pwd2, 50);
+                    if(!pass){
+                        alert("비밀번호확인이 너무 길어요");
+                        f.pwd2.focus();
+                        return false;
+                    }
+		        }
+                if(pwd1==pwd2){                    
+                    f.submit();
+                }else{
+                    alert("비밀번호확인이 다르게 입력 되었습니다")
+                    f.pwd2.value = "";
+                    f.pwd2.focus();
+                    return false;
+                }
+        }
+        function checkByteLen(str, size){
+            var byteLen = getByteLen(str);
+            if(byteLen <= size){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        function getByteLen(str){
+            return str.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g,"$&$1$2").length;
+        }
+        function enterCheck(elm){
+            if(event.keyCode == 13){
+                if(elm == f.userid){
+                    f.username.focus();
+                }else if(elm == f.username){
+                    f.pwd1.focus();
+                }else if(elm == f.pwd1){
+                    f.pwd2.focus();
+                }else{
+                    check();
+                }
+            }
+        }
+        </script>                
+        <script language="javascript">        
+            switch({{result}}){
+                case 0:
+                    alert("회원가입 실패!! 중복아이디존재");
+                    location.href = "/register"
+                    break;
+                case 1:
+                    alert("회원가입 성공!!");
+                    location.href = "/"
+                    break;                    
+            }            
+        </script>
+    </head>
+    <body class="bg-primary">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
+                                    <div class="card-body">
+                                        <form name="f" action="/register_ok/" method="post">
+                                            {% csrf_token %}                                            
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputEmail" name="userid" type="email" placeholder="name@example.com" onkeydown="enterCheck(this)" />
+                                                <label for="inputEmail">회원가입 아이디</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputFirstName" name="username" type="text" placeholder="Enter your first name" onkeydown="enterCheck(this)"  />
+                                                <label for="inputFirstName">사용할 닉네임</label>                                                                                       
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                        <input class="form-control" id="inputPassword" name="pwd1" type="password" placeholder="Create a password" onkeydown="enterCheck(this)" />
+                                                        <label for="inputPassword">비밀번호</label>
+                                        
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputPasswordConfirm" name="pwd2" type="password" placeholder="Confirm password" onkeydown="enterCheck(this)" />
+                                                <label for="inputPasswordConfirm">비밀번호 확인</label>                                               
+                                            </div>
+                                            <div class="mt-4 mb-0">
+                                                <div class="d-grid">
+                                                    <input class="btn btn-primary" type="button" value="Account!" onclick="check()"/>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center py-3">
+                                        <div class="small"><a href="/">Have an account? Go to login</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src={% static 'js/scripts.js' %}></script>
+        
+    </body>
+</html>

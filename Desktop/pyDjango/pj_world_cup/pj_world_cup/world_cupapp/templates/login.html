@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+        
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="descsription" content="" />
+        <meta name="author" content="" />
+        <title>Login - SB Admin</title>
+        {% load static %}
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        {% load static %}
+        <script src="{% static '/js/trim.js' %}"></script>
+        <script language="javascript">
+            // content, cate, index를 인수로 받아 form 태그로 전송하는 함수
+            function check() {
+                var idval = f.email.value;
+                idval = trim(idval);
+                if(idval.length == 0){
+                    alert("아이디를 넣어주세요");
+                    f.email.value = "";
+                    f.email.focus();
+                    return false;
+	        	}else{  
+                    pass = checkByteLen(idval, 50);
+                    if(!pass){
+                        alert("아이디가 너무 길어요");
+                        f.email.focus();
+                        return false;
+                    }
+		        }
+                var pwdval = f.pwd.value;
+                pwdval = trim(pwdval);
+                if(pwdval.length == 0){
+                    alert("비번을 넣어주세요");
+                    f.pwd.value = "";
+                    f.pwd.focus();
+                    return false;
+                }else{
+                    pass = checkByteLen(pwdval, 30);
+                    if(!pass){
+                        alert("비번이 너무 길어요");
+                        f.pwd.focus();
+                        return false;
+                    }
+                }
+            
+        f.submit();
+        }
+        function checkByteLen(str, size){
+            var byteLen = getByteLen(str);
+            if(byteLen <= size){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        function getByteLen(str){
+            return str.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g,"$&$1$2").length;
+        }
+        function enterCheck(elm){
+            if(event.keyCode == 13){
+                if(elm == f.email){
+                    f.pwd.focus();
+                }else{
+                    check();
+                }
+            }
+        }
+
+        </script>
+        <script language="javascript">        
+            switch({{result}}){
+                case 0:
+                    alert("로긴실패!! (회원 아이디가 존재하지 않음)");
+                    location.href = "/"
+                    break;
+                case 1:
+                    alert("로긴실패!! (비밀번호가 틀림)");
+                    location.href = "/"
+                    break;
+                case 2:
+                    alert("로긴성공!!");
+                    location.href = "/home"
+                    break;
+            }            
+        </script>
+    </head>
+    <body class="bg-primary">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                    <div class="card-body">
+                                        <form name="f" action="/login_ok/" method="post">
+                                            {% csrf_token %}
+                                            <div class="form-floating mb-3">
+                                                
+                                                <input class="form-control" id="inputEmail" name="email" type="email" placeholder="name@example.com" onkeydown="enterCheck(this)" />
+                                                <label for="inputEmail">아이디</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputPassword" name="pwd" type="password" placeholder="Password" onkeydown="enterCheck(this)" />
+                                                <label for="inputPassword">비밀번호</label>
+                                            </div>
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
+                                                <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <a class="small" href="password.html">Forgot Password?</a>
+                                                <input class="btn btn-primary" type="button" value="드가자" onclick="check()"/>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center py-3">
+                                        <div class="small"><a href="register">Need an account? Sign up!</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+    </body>
+</html>
+
+
