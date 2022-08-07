@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>이상형월드컵</title>
+	<meta charset="utf-8">
+	<style>
+		img{
+			width: 500px;
+			height: 500px;
+		}
+	</style>
+</head>
+<body>    
+    {% comment %} {% for object in all_url %}
+    {{object.url}}
+    
+    {% endfor %} {% endcomment %}
+    
+    {% comment %} <img id="image" src="{{all_url1.url}}">
+	<img id="images" src="{{all_url2.url}}"> {% endcomment %}
+</body>
+ <body>
+	<center>
+	<h1>이상형 월드컵</h1>
+	<p id="cal"></p>
+	<img id="image" onclick="change(0)">
+	<img id="images" onclick="change(1)">
+	<script>
+        let all_url = [
+            {% for object in all_url %}
+                {
+                name: "{{object.name}}",
+                url:"{{object.url}}"
+                },
+            {% endfor %}
+        ]		
+		var images=[];
+		var sImages = [];
+
+		// var image=[];
+		// var image1=[];
+		// var result=[];
+		// var result1=[];
+		// var result2=[];
+		var cnt=0;
+		var num=0;
+		var sNum = 0;
+		var cnt2=0;
+
+		// var num1=0;
+		// var num2=0;
+		// var num3=0;
+
+		function show(){
+            
+            
+            for(i=0; i<32; i++)
+			{
+				images[i]= all_url[i].url;
+			}
+            
+
+			
+			images.sort(function(a,b){return 0.5- Math.random()});
+			showImg(num);
+		}
+
+		show();
+
+		function showImg(num){
+			document.getElementById('image').src=images[num];
+			document.getElementById('images').src=images[num+1];
+			cnt2++;
+		}
+
+		function change(n){
+			if(cnt2<20)
+			{
+				cnt++;
+				if(n == 0)
+					sImages[sNum++] = images[num];
+				else
+					sImages[sNum++] = images[num+1];
+				num+=2;
+
+				showImg(num);
+
+				if(cnt == images.length/2){
+					for(i=0; i<sImages.length; i++){
+						images[i] = sImages[i];
+						sImages[i] = null;
+					}
+					images.splice(cnt);
+					cnt = 0;
+					num = 0;
+					sNum = 0;
+					showImg(num);
+				}
+			}
+		}
+	</script>
+	</center>
+</body>
+</html>

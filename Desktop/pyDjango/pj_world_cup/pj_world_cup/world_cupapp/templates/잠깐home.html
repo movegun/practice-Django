@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">    
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>타이틀 제목 (이상형 월드컵)</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        {% load static %}
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>        
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">상단 목록 바</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>                    
+                </div>
+            </form>
+            {% if request.session.login_ok_user %}
+            <span style="color:white">{{request.session.login_ok_user}}님 어서오세요</span>         
+            {% else %}            
+            {% endif %}
+            
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>                        
+                        <li><hr class="dropdown-divider" /></li>
+                        {% if request.session.login_ok_user %}                        
+                        <li><a class="dropdown-item" href="/logout/">로그아웃</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="/">로그인</a></li>
+                        {% endif %}                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">옵션 큰 이름</div>
+                            <a class="nav-link" href="index.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                오른쪽 옵션
+                            </a>
+                            <div class="sb-sidenav-menu-heading">옵션 작은 이름</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                옵션2
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">옵션2-작은 옵션1</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">옵션2-작은 옵션2</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                옵션3
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        옵션3 -작은 옵션1 
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="login.html">Login</a>
+                                            <a class="nav-link" href="register.html">Register</a>
+                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                        옵션3 -작은 옵션2
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="401.html">401 Page</a>
+                                            <a class="nav-link" href="404.html">404 Page</a>
+                                            <a class="nav-link" href="500.html">500 Page</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">옵션 작은 이름2</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                옵션4
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                옵션5
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        {{request.session.login_ok_user}}
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">월드으컵</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">무야호</li>
+                        </ol>                                      
+                    </div>
+                    <div class="container-fluid" style="height: auto !important;">
+                        <div class="row equal">
+                            <div id="list0" class="col-xl-12 list">
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">가장 좋아하는 학교 급식 메뉴</b>
+                                            </h3>
+                                            "음식"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="https://i.ibb.co/vvcNJp1/7-B10-B169-C95-E-4-C79-955-B-7-C929-D45-C491.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="https://supercup.co.kr/match?type=IQT7e3X40WOs&id=PDhuJxLFxT&cnt=16&yn=N" class="btn btn-primary">플레이</a>                                            
+                                            <a role="button" href="" class="btn btn-primary">댓글</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">여자 배우</b>
+                                            </h3>
+                                            "예비2"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <video autoplay="" loop="" muted="" playsinline="" style="position:inherit;z-index:0;width:49%;margin-right:1%;height:100%; object-position: 50% 10%; object-fit:cover; flaot:left; vertical-align:middle;" poster="https://live.staticflickr.com/65535/49616605896_a61cef2aac_o_d.gif"><source src="https://giant.gfycat.com/AptCapitalDogfish.mp4"></video>
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="https://supercup.co.kr/match?type=girlIdol&id=G8JrjtTKW5&cnt=8&yn=N" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">남자 배우</b>
+                                            </h3>
+                                            "예비3"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img class="lazy" src="https://i.ibb.co/HdMYzkf/75ec647479bc.gif" style="position:inherit;z-index:0;width:49%;margin-right:1%;height:100%; object-position: 50% 10%; object-fit:cover; flaot:left;">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="https://supercup.co.kr/match?type=boyActor&id=GsbkBS1Eso&cnt=32&yn=N" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">가장 싫은 친구</b>
+                                            </h3>
+                                            "예비4"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img class="lazy" src="https://i.ibb.co/C2YQXWN/image.png" style="position:inherit;z-index:0;width:49%;margin-right:1%;height:100%; object-position: 50% 10%; object-fit:cover; flaot:left;">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="https://supercup.co.kr/match?type=7uXAwKGYneqH&id=58Xh9LxyHE&cnt=16&yn=N" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="list1" class="col-xl-12 list">
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵5</b>
+                                            </h3>
+                                            "예비5"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵6</b>
+                                            </h3>
+                                            "예비6"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵7</b>
+                                            </h3>
+                                            "예비7"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵8</b>
+                                            </h3>
+                                            "예비8"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="list2" class="col-xl-12 list">
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵9</b>
+                                            </h3>
+                                            "예비9"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵10</b>
+                                            </h3>
+                                            "예비10"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵11</b>
+                                            </h3>
+                                            "예비11"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵12</b>
+                                            </h3>
+                                            "예비12"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="list3" class="col-xl-12 list">
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵13</b>
+                                            </h3>
+                                            "예비13"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵14</b>
+                                            </h3>
+                                            "예비14"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵15</b>
+                                            </h3>
+                                            "예비15"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵16</b>
+                                            </h3>
+                                            "예비16"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="list4" class="col-xl-12 list">
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵17</b>
+                                            </h3>
+                                            "예비17"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵18</b>
+                                            </h3>
+                                            "예비18"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵19</b>
+                                            </h3>
+                                            "예비19"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" style="display:inline; float:left;">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3>
+                                                <b style="font-size:22px; color:#000000;">월드컵20</b>
+                                            </h3>
+                                            "예비20"
+                                        </div>
+                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
+                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
+                                                <img src="cat.jpg" style="width:100%;height:100%" alt="img">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
+                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+    </body>
+</html>

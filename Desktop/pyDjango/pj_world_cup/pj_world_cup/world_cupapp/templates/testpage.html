@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>이상형월드컵</title>
+	<meta charset="utf-8">
+	<style>
+		img{
+			width: 500px;
+			height: 500px;
+		}
+	</style>
+</head>
+<body>
+	<center>
+	<h1>이상형 월드컵</h1>
+	<p id="rounds"></p>
+    <p id="filter"></p>
+    <table>
+        <tr>
+            <td>
+                <figure>        
+                    <img id="left_image" onclick="change(0)" >  
+                    <center><span id="left_image_name" ></span></center>
+                </figure>
+            </td>
+            <td>
+                <figure> 
+                    <img id="right_image" onclick="change(1)">
+                    <center><figcaption id="right_image_name" ></figcaption></center>        
+                </figure>
+            </td>
+        <tr>
+    </table>    	
+    </center>
+
+	<script>
+        let all_url = [
+            {% for object in all_url %}
+                {
+                name: "{{object.name}}",
+                url:"{{object.url}}"
+                },
+            {% endfor %}
+        ]	
+        var total=0;
+		var images=[]; // src가 들어있는 리스트
+		var sImages = []; // 선택된 src가 들어있는 리스트
+
+		var cnt=0;  // 메인 list 에서 몇번 보여줫나
+		var num=0;  // 메인 list 핸들링 num
+		var sNum = 0; // 선택된 list 핸들링 num
+		var cnt2=0;     // 총 라운드 수
+
+		function show(){    // 맨 처음 메인 list에 src 넣고 순서 랜덤 배치하기
+
+			for(i=0; i<16; i++)
+			{
+				images[i]= all_url[i];
+			}
+			images.sort(function(a,b){return 0.5- Math.random()});			
+		}
+		show(0);
+        showImg(num);
+
+		function showImg(num){  // num=0을 시작으로 메인 list 의 0,1  2,3  4,5  --- 2개씩 보여주기
+            if(images.length==1){      //우승자 나왔을때
+
+                /*document.getElementById('left_image').src=images[0].url;
+                document.getElementById('right_image').src=images[0].url;
+                document.getElementById('left_image_name').innerHTML=images[0].name;
+                document.getElementById('right_image_name').innerHTML=images[0].name;*/
+                
+                winner_name = images[0].name;
+                winner_src = images[0].url;   
+                console.log(winner_name)             
+                console.log(winner_src)             
+                
+                location.href = "/winner?"+winner_name+"@"+winner_src;
+
+            }else{
+                document.getElementById('left_image').src=images[num].url;
+                document.getElementById('right_image').src=images[num+1].url;
+                document.getElementById('left_image_name').innerHTML=images[num].name;
+                document.getElementById('right_image_name').innerHTML=images[num+1].name;
+                
+                cnt2++; // 라운드 수
+                document.getElementById('rounds').innerHTML=cnt2+"라운드";
+            }
+			
+		}
+
+		function change(n){     //change(0)왼쪽선택 or change(1)오른쪽선택
+            console.log("cnt2 : "+cnt2+"라운드")
+            console.log("cnt : "+cnt)
+				cnt++;
+				if(n == 0)      // 해당 이미지를 선택된 list로 넣어두기
+					sImages[sNum++] = images[num];
+				else
+					sImages[sNum++] = images[num+1];
+
+				num=num+2; //보여준 2개 다음 사진 두개 보여주기위해서
+				
+				if(cnt == images.length/2){
+                    total++;
+                    document.getElementById('filter').innerHTML=total+"번 걸러짐";
+
+                    //images.splice(0)
+                    images=[]
+					for(i=0; i<sImages.length; i++){
+						images[i] = sImages[i];						
+					}
+                    sImages=[]
+                    console.log("변경전"+images.length)                    
+					//images.splice(cnt);
+                    console.log("변경후"+images.length)
+					cnt = 0;
+					num = 0;
+					sNum = 0;					
+				}
+                showImg(num);			
+		}
+
+
+
+		//document.getElementById('cal').innerHTML=text;        
+	</script>
+	
+    
+</body>
+</html>

@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
-from .models import Member
+from .models import Member,Urls
 # Create your views here.
 
 def login(request):
@@ -88,5 +88,35 @@ def logout(request):
     if request.session.get('login_ok_user'):
         request.session.clear()        
     return redirect("/")
+
+
+def two_imgs(request):
+    template = loader.get_template('two_imgs.html')
+    
+    all_url = Urls.objects.all()
+    context={
+        'all_url':all_url,        
+    }           
+    
+    
+    print(all_url)
+    return HttpResponse(template.render(context, request))
+
+def testpage(request):
+    template = loader.get_template('testpage.html')
+    
+    all_url = Urls.objects.all()
+    context={
+        'all_url':all_url,        
+    }           
+    
+    
+    print(all_url)
+    return HttpResponse(template.render(context, request))
+    
+def winner(request):
+    template = loader.get_template('winner.html')
+    
+    return HttpResponse(template.render({}, request))
     
     
