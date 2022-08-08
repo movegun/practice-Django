@@ -28,3 +28,19 @@ class Urls(models.Model):
     url = models.TextField()
     def __str__(self):
         return self.name
+    
+class Ranking(models.Model):
+    name = models.CharField(max_length=200)
+    rank = models.PositiveIntegerField(default=0)
+    def __str__(self):
+        return (self.name)
+    def update_rank(self):
+        self.rank = self.rank +1
+        self.save()
+        
+class All_url(models.Model):
+    theme = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    url = models.TextField()
+    def __str__(self):
+        return self.name

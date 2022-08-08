@@ -7,32 +7,36 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pj_world_cup.settings")
 import django
 django.setup()
 
-from world_cupapp.models import Urls
+from world_cupapp.models import All_url
+
+
+
 
 def return_dicts():
-    
     chrome_driver_path="C:/LDG/PyAdvanced/day06_Crawling/자료실/chromedriver.exe"
     
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     driver = webdriver.Chrome(chrome_driver_path,options=options)
     
-    URL = 'https://brikorea.com/rk/star2206'
-    
+    URL = 'https://brikorea.com/rk/star2206'    
     driver.get(url=URL)
     
     el_keywords = driver.find_elements(By.XPATH,"/html/body/div[1]/section/div/div[4]/div[4]/div/div[2]/table/tbody/tr/td[2]")
-    
+     
     keywords=[]
     for el_keyword in el_keywords:
         keyword = el_keyword.text.strip()
         keywords.append(keyword)
         if len(keywords)==32:
             break
-    print(keywords) 
-    
+    print(keywords)    
     driver.close()
-    driver = webdriver.Chrome(chrome_driver_path,options=options)
+
+    # keywords=["이상해씨","파이리","리자드","리자몽","꼬부기","거북왕","단데기","버터플","메가독침붕",
+    #       "피죤","아보크","피카츄","식스테일","뚜벅쵸","콘팡","디그다","나옹이","고라파덕","성원숭","슈륙챙이","윤겔라",
+    #       "알통몬","우츠동","꼬마돌","야도란","파오리","질퍽이","롱스톤","찌리리공","홍수몬","내루미","또가스"]
+    driver = webdriver.Chrome(chrome_driver_path,options=options)    
     URL2 = 'https://www.google.com/imghp?hl=ko'
     driver.get(URL2)
     dicts={}
@@ -56,21 +60,22 @@ def return_dicts():
     driver.close()
     return dicts
 
-if __name__=='__main__':    
+if __name__=='__main__':
     url_dict = return_dicts()
     for name, url in url_dict.items():
-        if len(Urls.objects.all())==32:
-            break
+        
+        # if len(All_url.objects.all())==32:
+        #     break
         try:
-            if Urls.objects.get(name=name):
-                print("겹처서패스")
+            if All_url.objects.get(name=name):
+                print("겹쳐서패스")
                 pass
             else:
-                Urls(name=name,url=url).save()
+                All_url(theme='celeb',name=name,url=url).save()
                 print("세이브 한개 완료")
         except:
-            Urls(name=name,url=url).save()
+            All_url(theme='celeb',name=name,url=url).save()
             print("세이브 한개 완료")
     
     
-    print("URLS 모델 총 row 갯수:",len(Urls.objects.all()))
+    print("All_url 모델 총 row 갯수:",len(All_url.objects.all()))

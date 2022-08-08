@@ -12,4 +12,9 @@ urlpatterns = [
     path('two_imgs/', views.two_imgs, name='two_imgs'),
     path('testpage/', views.testpage, name='testpage'),
     path('winner/', views.winner, name='winner'),
+    path('ranking/', views.ranking, name='ranking'),    
+    path('boot/', views.boot, name='boot'),
+    path('modal/@<str:theme>/', views.modal, name='modal'),
+    path('test/', views.test, name='test'),
+    # path('celeb/<int:rounds>', views.celeb, name='celeb'),    
     ]

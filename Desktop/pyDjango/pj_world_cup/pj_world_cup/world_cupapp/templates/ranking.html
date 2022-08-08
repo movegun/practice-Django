@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ranking 순위사이트</title>
+        <meta charset="utf-8">
+        <style>
+            img{
+                width: 500px;
+                height: 500px;
+            }
+        </style>
+        {% load static %}
+        <link href="{% static 'css/ranking.css' %}" rel="stylesheet" />
+    </head>
+<body>
+    
+    <div class="container">
+        <header>
+    <h1>연예인 순위 TOP</h1>
+        </header>
+        <div class="wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>이름</th>
+                        <th>우승횟수</th>
+                        <th>여기다가승률</th>
+                    </tr>
+                </thead>
+                <tbody>                         
+                    {% for object in all_rank %}
+                    <tr>
+                        <td class="rank">{{forloop.counter}}</td>
+                        <td class="team">{{object.name}}</td>
+                        <td class="points">{{object.rank}}</td>
+                        <td class="up-down">XX%</td>
+                     </tr>
+                    {% endfor %}                
+                </tbody>
+            </table>
+        </div>
+    </div>   
+</body>
+</html>
+
+<script language = "javascript">
+    temp = location.href.split("?");
+    data=temp[1].split("@");
+    console.log("data"+decodeURI(data[0]))
+    
+    winner_name = decodeURI(data[0]);
+    winner_src = data[1];
+    
+    document.getElementById('name').innerHTML=winner_name;
+    document.getElementById('url').src=winner_src;
+    //document.writｅ(winner_name + " " + winner_src );   //페이지에 전달받은 값 띄워서 확인하기     
+</script>
+
