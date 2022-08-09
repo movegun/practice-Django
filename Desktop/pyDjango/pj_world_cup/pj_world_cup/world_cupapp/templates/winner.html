@@ -11,29 +11,22 @@
         </style>
     </head>
 <body>
+    {{winner_row}}
     <center>
         <h1>당신이 뽑은 1등</h1>        
             <figure>        
-                <img id="url" >  
-                <center><span id="name" ></span></center>
+                <img id="url" src="{{winner_row.url}}">  
+                <center><span id="name" >{{winner_row.name}}</span></center>
             </figure>
-    </center>
-<form name="rankpush" >
 
-</form>
+            <a role="button" href="/home">홈가기</a>
+    </center>
+
 </body>
 </html>
 
 <script language = "javascript">
-    temp = location.href.split("?");
-    data=temp[1].split("@");
-    console.log("data"+decodeURI(data[0]))
-    
-    winner_name = decodeURI(data[0]);
-    winner_src = data[1];
-    
-    document.getElementById('name').innerHTML=winner_name;
-    document.getElementById('url').src=winner_src;
+
     //document.writｅ(winner_name + " " + winner_src );   //페이지에 전달받은 값 띄워서 확인하기     
 
 </script>

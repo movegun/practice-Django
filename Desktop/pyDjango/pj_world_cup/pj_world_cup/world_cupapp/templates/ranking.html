@@ -16,36 +16,130 @@
     
     <div class="container">
         <header>
-    <h1>연예인 순위 TOP</h1>
+            <h1><a href="/home">임시홈임시홈임시홈임시홈</a></h1>
+            <h1>{{selected_theme}} 순위 TOP</h1>    
         </header>
+        
         <div class="wrapper">
-            <table>
+            {{selected_theme}} 가 플레이 된 총 횟수 {{theme_total_play}}회
+                        
+            <table>                
                 <thead>
                     <tr>
                         <th>Rank</th>
                         <th>이름</th>
                         <th>우승횟수</th>
-                        <th>여기다가승률</th>
+                        <th>승률</th>
                     </tr>
                 </thead>
-                <tbody>                         
-                    {% for object in all_rank %}
-                    <tr>
+                <tbody>
+                    
+                    {% for object, rate in zipped_list_ranking_objects  %}                    
+                    <tr>                        
                         <td class="rank">{{forloop.counter}}</td>
                         <td class="team">{{object.name}}</td>
-                        <td class="points">{{object.rank}}</td>
-                        <td class="up-down">XX%</td>
+                        <td class="points">{{object.win_num}}</td>
+                        <td class="up-down">{{rate}}</td>
                      </tr>
-                    {% endfor %}                
+                    {% endfor %}
+                    
                 </tbody>
             </table>
         </div>
     </div>   
 </body>
+
+
+<center>
+<font color='gray' size='4' face='휴먼편지체'>
+<hr width='600' size='2' color='gray' noshade>
+<h3> 임시댓글창임시댓글창임시댓글창</h3>
+<hr width='600' size='2' color='gray' noshade>
+
+<form action="/ranking/{{selected_theme}}" method="post">
+    {% csrf_token %}
+    댓글입력 : 
+    <input name='comment' type='text' />
+    <input type='submit'>   
+</form>
+
+
+<TABLE border='2' width='600' align='center' noshade>
+<TR size='2' align='center' noshade bgcolor='AliceBlue'>
+	<th bgcolor='AliceBlue'>댓글번호</th>
+	<th color='gray'>이름</th>
+	<th color='gray'>댓글내용</th>
+    <th color='gray'>댓글추천수</th>
+	<th color='gray'>댓글쓴날짜시간</th>
+</TR>
+{% for comment_object in comment_objects %}
+		<tr>
+		<td align='center' >{{comment_object.comment_num}}</td>
+		<td>{{comment_object.username}}</td>
+		<td>{{comment_object.comment}}</td>
+        <td>
+            <form action="/ranking/{{selected_theme}}" method="POST">            
+                {% csrf_token %}
+                <input type="hidden" name="comment_order_num" value={{comment_object.comment_num}}>
+                <input type='submit' value={{comment_object.hit_num}}>
+            </form></td>
+		<td>{{comment_object.date}}</td>
+		</tr>
+{% endfor %}
+<input type="hidden" id="update_rank_name" name="update_rank_name" value="">        
+      
+
+     
+       
+      
+</TABLE>
+<!--
+<hr width='600' size='2' color='gray' noshade>
+<font color='gray' size='3' face='휴먼편지체'>
+    (총페이지수 : 3)
+    &nbsp;&nbsp;&nbsp;
+    
+        <a href="list.do?cp=1">  
+                	<strong>1</strong>
+    	</a>&nbsp;
+    
+        <a href="list.do?cp=2">
+			2
+    	</a>&nbsp;
+    
+        <a href="list.do?cp=3">
+            3
+    	</a>&nbsp;
+    
+    ( TOTAL : 9 )
+    
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       페이지 싸이즈 : 
+    <select id="psId" name="ps" onchange="f(this)">
+    		   <option value="3" selected>3</option>
+		       <option value="5">5</option>
+		       <option value="10">10</option>
+    </select>
+    
+    <script language="javascript">
+       function f(select){
+           //var el = document.getElementById("psId");
+           var ps = select.value;
+           //alert("ps : " + ps);
+           location.href="list.do?ps="+ps;
+       }
+    </script>
+    
+</font>
+<hr width='600' size='2' color='gray' noshade>
+-->     
+</center>
+</body>
+
 </html>
 
 <script language = "javascript">
-    temp = location.href.split("?");
+    {% comment %} temp = location.href.split("?");
     data=temp[1].split("@");
     console.log("data"+decodeURI(data[0]))
     
@@ -53,7 +147,7 @@
     winner_src = data[1];
     
     document.getElementById('name').innerHTML=winner_name;
-    document.getElementById('url').src=winner_src;
+    document.getElementById('url').src=winner_src; {% endcomment %}
     //document.writｅ(winner_name + " " + winner_src );   //페이지에 전달받은 값 띄워서 확인하기     
 </script>
 

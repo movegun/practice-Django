@@ -32,12 +32,13 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
           <button type="button" id="rstart" class="btn btn-primary" data-bs-dismiss="modal" >진행하기</button>
+          
         </div>
         <form >
       </div>
     </div>
 </div>
-<div id="bring_theme" >{{theme}}</div>
+<div id="bring_theme" >{{selected_theme}}</div>
 </body>
 <script language="javascript" type="text/javascript">
     $(window).on('load', function () {        
@@ -46,9 +47,7 @@
 
     $('#rstart').click(function() {
         var round = $("#selRound").val();
-        var theme = $("#bring_theme").text();
-        alert(theme)
-        alert(round)
+        var theme = $("#bring_theme").text();        
         window.location.href = "/"+theme+"/"+round;
         //window.location.href = $('#selRound').attr('data-u');
 	});

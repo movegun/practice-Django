@@ -22,7 +22,7 @@
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>                    
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
             </form>
             {% if request.session.login_ok_user %}
@@ -131,80 +131,30 @@
 
                             
                             <div id="list0" class="col-xl-12 list">
+                                {% for object in list_first_by_theme %}
                                 <div class="col-xl-3" style="display:inline; float:left;">
                                     <div class="card mb-3">
                                         <div class="card-header">
                                             <h3>
-                                                <b style="font-size:22px; color:#000000;">최고의 Celeb 월드컵</b>
+                                                <b style="font-size:22px; color:#000000;">최고의 {{object.theme}} 월드컵</b>
                                             </h3>
-                                            "예비1"
+                                            현재 1등 - {{object.name}}
                                         </div>
                                         <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
                                             <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
-                                                <img src="{{rank_object.url}}" style="width:100%;height:100%" alt="img">
+                                                <img src="{{object.url}}" style="width:100%;height:100%" alt="img">
                                             </div>
                                         </div>
                                         <div style="width:100%;text-align:center;" class="card-footer small text-muted">
-                                            <a role="button" href="/modal/@celeb" class="btn btn-primary">플레이</a>
+                                            <a role="button" href="/modal/{{object.theme}}" class="btn btn-primary">플레이</a>
+                                            <a role="button" href="/ranking/{{object.theme}}" class="btn btn-primary">순위보기</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3" style="display:inline; float:left;">
-                                    <div class="card mb-3">
-                                        <div class="card-header">
-                                            <h3>
-                                                <b style="font-size:22px; color:#000000;">월드컵2</b>
-                                            </h3>
-                                            "예비2"
-                                        </div>
-                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
-                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
-                                                <img src="" style="width:100%;height:100%" alt="img">
-                                            </div>
-                                        </div>
-                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
-                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3" style="display:inline; float:left;">
-                                    <div class="card mb-3">
-                                        <div class="card-header">
-                                            <h3>
-                                                <b style="font-size:22px; color:#000000;">월드컵3</b>
-                                            </h3>
-                                            "예비3"
-                                        </div>
-                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
-                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
-                                                <img src="" style="width:100%;height:100%" alt="img">
-                                            </div>
-                                        </div>
-                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
-                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3" style="display:inline; float:left;">
-                                    <div class="card mb-3">
-                                        <div class="card-header">
-                                            <h3>
-                                                <b style="font-size:22px; color:#000000;">월드컵4</b>
-                                            </h3>
-                                            "예비4"
-                                        </div>
-                                        <div class="card-body" style="font-size:0; text-align:center; padding:0px;">
-                                            <div class="item" style="display:inline-block; vertical-align:middle; height:33vh; width:100%;">
-                                                <img src="" style="width:100%;height:100%" alt="img">
-                                            </div>
-                                        </div>
-                                        <div style="width:100%;text-align:center;" class="card-footer small text-muted">
-                                            <a role="button" href="401.html" class="btn btn-primary">플레이</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
-
+                            
+                            
                             
                         </div>
                     </div>

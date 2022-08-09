@@ -42,5 +42,21 @@ class All_url(models.Model):
     theme = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
     url = models.TextField()
+    win_num = models.PositiveIntegerField(default=0)
     def __str__(self):
-        return self.name
+        return self.theme+" "+self.name
+    def update_win_num(self):
+        self.win_num = self.win_num +1
+        self.save()
+
+class Comment_test(models.Model):
+    comment_num = models.BigAutoField(primary_key=True)
+    username = models.CharField(max_length=200)
+    theme = models.CharField(max_length=200)
+    comment = models.TextField()
+    hit_num = models.PositiveIntegerField(default=0)
+    date = models.DateTimeField(auto_now=True)
+    
+    def update_hit_num(self):
+        self.hit_num = self.hit_num +1
+        self.save()
