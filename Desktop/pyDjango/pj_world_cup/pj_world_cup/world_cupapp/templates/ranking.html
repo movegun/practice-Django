@@ -3,12 +3,56 @@
     <head>
         <title>ranking 순위사이트</title>
         <meta charset="utf-8">
-        <style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"/>
+        <script src="https://code.jquery.com/jquery-1.8.3.min.js" integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8=" crossorigin="anonymous"></script>
+        <style>            
             img{
                 width: 500px;
                 height: 500px;
             }
+            {% comment %} width:채팅창 너비 padding 겉 여백 font-size 채팅글자크기 @@width로 너비조정 500px   {% endcomment %}
+            .chat_wrap { border:1px solid #999; width:1100px; padding:5px; font-size:13px; color:#333}
+            {% comment %} border-radius: 배경 모서리라운드처리 @@height로 높이 조정 400px  {% endcomment %}
+            .chat_wrap .inner{background-color:#acc2d2; border-radius:5px; padding:10px; overflow-y:scroll;height: 1950px;}
+            {% comment %} margin-top : 채팅과 채팅 사이의 여백 {% endcomment %}
+            .chat_wrap .item{margin-top:15px}
+            .chat_wrap .item:first-child{margin-top:0px}
+            {% comment %} max-width: 채팅풍선의 맥스너비 {% endcomment %}
+            .chat_wrap .item .box{display:inline-block; max-width:500px; position:relative}
+            .chat_wrap .item .box::before{content:""; position:absolute; left:-8px; top:9px; border-top:0px solid transparent; border-bottom:8px solid transparent;border-right:8px solid #fff;}
+            .chat_wrap .item .box .msg {background:#fff; border-radius:10px; padding:8px; text-align:left}
+            .chat_wrap .item .box .time {font-size:11px; color:#999; position:absolute; right: -75px; bottom:5px; width:70px}
+            .chat_wrap .item.mymsg{text-align:right}
+            .chat_wrap .item.mymsg .box::before{left:auto; right:-8px; border-left:8px solid #fee600; border-right:0;}
+            .chat_wrap .item.mymsg .box .msg{background:#fee600}
+            .chat_wrap .item.mymsg .box .time{right:auto; left:-75px}
+            .chat_wrap .item .box{transition:all .3s ease-out; margin:0 0 0 20px;opacity:0}
+            .chat_wrap .item.mymsg .box{transition:all .3s ease-out; margin:0 20px 0 0;}
+            .chat_wrap .item.on .box{margin:0; opacity: 1;}
+    
+            input[type="text"]{border:0; width:100%;background:#ddd; border-radius:5px; height:30px; padding-left:5px; box-sizing:border-box; margin-top:5px}
+            input[type="text"]::placeholder{color:#999}
+            
+            div.two_wrap {
+                width: 100%;
+                height: 1000px;
+                border: 1px solid #000;
+            }
+            div.wrapper {
+                width: 50%;
+                float: left;
+                box-sizing: border-box;
+            }
+            div.chat_wrap {
+                width: 50%;
+                float: right;
+                box-sizing: border-box;
+            }
+
         </style>
+        
         {% load static %}
         <link href="{% static 'css/ranking.css' %}" rel="stylesheet" />
     </head>
@@ -19,7 +63,8 @@
             <h1><a href="/home">임시홈임시홈임시홈임시홈</a></h1>
             <h1>{{selected_theme}} 순위 TOP</h1>    
         </header>
-        
+    </div>
+    <div class="two_wrap">
         <div class="wrapper">
             {{selected_theme}} 가 플레이 된 총 횟수 {{theme_total_play}}회
                         
@@ -46,10 +91,47 @@
                 </tbody>
             </table>
         </div>
-    </div>   
+    
+        <div class="chat_wrap">
+            <form action="/ranking/{{selected_theme}}" method="post">
+                {% csrf_token %}
+                {{request.session.login_ok_user}} : 
+                <input name='comment' type='text' /><input type='submit'>
+                   
+            </form>
+            <div class="inner">
+                {% for comment_object in comment_objects %}
+                <div class="item mymsg on">
+                    <div class="box">
+                        <p class="msg">{{comment_object.username}}<br>
+                            {{comment_object.comment}}</p>
+                        <span class="time">{{comment_object.date}}</span>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- <div class="item">
+                    <div class="box">
+                        <p class="msg">안녕하세요</p>
+                        <span class="time">오전 10:05</span>
+                    </div>
+                </div>
+
+                <div class="item mymsg">
+                    <div class="box">
+                        <p class="msg">안녕하세요</p>
+                        <span class="time">오전 10:05</span>
+                    </div>
+                </div> -->
+                
+            </div>
+
+            
+        </div>
+    </div>
+    
 </body>
 
-
+{% comment %} 
 <center>
 <font color='gray' size='4' face='휴먼편지체'>
 <hr width='600' size='2' color='gray' noshade>
@@ -69,9 +151,23 @@
 	<th bgcolor='AliceBlue'>댓글번호</th>
 	<th color='gray'>이름</th>
 	<th color='gray'>댓글내용</th>
-    <th color='gray'>댓글추천수</th>
-	<th color='gray'>댓글쓴날짜시간</th>
+    <th color='gray'>댓글추천수
+        <form action="/ranking/{{selected_theme}}" method="POST">
+            {% csrf_token %}
+            <input type='submit' id="orderbypop" name="popular" value="추천많은">
+            <input type='submit' id="orderbyunpop" name="unpopular" value="추천없는">
+        </form>
+
+    </th>
+	<th color='gray'>댓글쓴날짜
+        <form action="/ranking/{{selected_theme}}" method="POST">
+            {% csrf_token %}            
+            <input type='submit' id="orderbydate2" name="recently" value="최신순">
+            <input type='submit' id="orderbydate1" name="lately" value="오래된순">
+        </form>
+    </th>
 </TR>
+
 {% for comment_object in comment_objects %}
 		<tr>
 		<td align='center' >{{comment_object.comment_num}}</td>
@@ -80,74 +176,16 @@
         <td>
             <form action="/ranking/{{selected_theme}}" method="POST">            
                 {% csrf_token %}
-                <input type="hidden" name="comment_order_num" value={{comment_object.comment_num}}>
-                <input type='submit' value={{comment_object.hit_num}}>
+                {{comment_object.hit_num}}
+                <input type="hidden" name="comment_order_num" value={{comment_object.comment_num}}>                
+                <input type='submit' id="hit" value="추천">
+                
             </form></td>
 		<td>{{comment_object.date}}</td>
 		</tr>
 {% endfor %}
-<input type="hidden" id="update_rank_name" name="update_rank_name" value="">        
-      
-
-     
-       
       
 </TABLE>
-<!--
-<hr width='600' size='2' color='gray' noshade>
-<font color='gray' size='3' face='휴먼편지체'>
-    (총페이지수 : 3)
-    &nbsp;&nbsp;&nbsp;
-    
-        <a href="list.do?cp=1">  
-                	<strong>1</strong>
-    	</a>&nbsp;
-    
-        <a href="list.do?cp=2">
-			2
-    	</a>&nbsp;
-    
-        <a href="list.do?cp=3">
-            3
-    	</a>&nbsp;
-    
-    ( TOTAL : 9 )
-    
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       페이지 싸이즈 : 
-    <select id="psId" name="ps" onchange="f(this)">
-    		   <option value="3" selected>3</option>
-		       <option value="5">5</option>
-		       <option value="10">10</option>
-    </select>
-    
-    <script language="javascript">
-       function f(select){
-           //var el = document.getElementById("psId");
-           var ps = select.value;
-           //alert("ps : " + ps);
-           location.href="list.do?ps="+ps;
-       }
-    </script>
-    
-</font>
-<hr width='600' size='2' color='gray' noshade>
--->     
-</center>
-</body>
-
+</center> {% endcomment %}
 </html>
-
-<script language = "javascript">
-    {% comment %} temp = location.href.split("?");
-    data=temp[1].split("@");
-    console.log("data"+decodeURI(data[0]))
-    
-    winner_name = decodeURI(data[0]);
-    winner_src = data[1];
-    
-    document.getElementById('name').innerHTML=winner_name;
-    document.getElementById('url').src=winner_src; {% endcomment %}
-    //document.writｅ(winner_name + " " + winner_src );   //페이지에 전달받은 값 띄워서 확인하기     
-</script>
 

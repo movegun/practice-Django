@@ -112,6 +112,7 @@ def home(request):
         # for문 3바퀴 theme가 food 것들을 '-win_num'으로 줄세우고 첫번째 row
         # for문 4바퀴 theme가 vegetable 것들을 '-win_num'으로 줄세우고 첫번째 row
     
+    print(list_first_by_theme[0].theme)
     #print(list_first_by_theme) 
     #[<All_url: pokemon 피카츄>, <All_url: celeb 오마이걸>, <All_url: food 김치찌개>, <All_url: vegetable 버섯>]
                 
@@ -143,44 +144,36 @@ def winner(request,selected_theme,selected_name):
     return HttpResponse(template.render(context, request))
 
 def ranking(request,selected_theme):
+    comment_objects = Comment_test.objects.filter(theme=selected_theme).order_by('-date')
+    # print(comment_objects.values())
+    
     if request.method == 'POST':
         if "comment" in request.POST:
             new_comment = request.POST['comment']
-            username = request.session['login_ok_user']
-            Comment_test(username=username,theme=selected_theme,comment=new_comment).save()            
+            if len(new_comment)==0:pass
+            else:
+                username = request.session['login_ok_user']
+                Comment_test(username=username,theme=selected_theme,comment=new_comment).save()            
 
         elif "comment_order_num" in request.POST:
-            comment_order_num=request.POST['comment_order_num']            
+            comment_order_num=request.POST['comment_order_num']                        
             selected_comment_object=Comment_test.objects.get(comment_num=comment_order_num)
             Comment_test.update_hit_num(selected_comment_object)
-        
-        
-        #print(request.POST['comment'])
-        # print(request.POST['hit_num'])
-        # print("111111111111111111")
-        
-        # new_comment = request.POST['comment']
-        
-        # print(new_comment)///
-        # username = request.session['login_ok_user']
-        # print(username)
-        # Comment_test(username=username,theme=selected_theme,comment=new_comment).save()
-    # elif request.method == 'GET':
-    #     comment_order_num=request.GET['comment_order_num2']
-    #     print(comment_order_num)
-    #     print("222222222222222222222")
-        
+            
+        elif "lately" in request.POST:
+            comment_objects = Comment_test.objects.filter(theme=selected_theme).order_by('date')            
+        elif "popular" in request.POST:
+            comment_objects = Comment_test.objects.filter(theme=selected_theme).order_by('-hit_num')
+        elif "unpopular" in request.POST:
+            comment_objects = Comment_test.objects.filter(theme=selected_theme).order_by('hit_num')    
         
     else:pass
     
-    comment_objects = Comment_test.objects.filter(theme=selected_theme)
-    # print(comment_objects.values())
     
     template = loader.get_template('ranking.html')    
     # 해당 theme 의 wim_num으로 줄세워서 리스트에 담기
     list_ranking_objects = All_url.objects.all().filter(theme=selected_theme).order_by('-win_num')    
     # print("11111",len(list_ranking_objects))
-    five=[1,2,3,4,5]
     
     # 해당 theme 의 총 플레이 수 구하기
     list_object = All_url.objects.filter(theme=selected_theme).values('theme').annotate(total_play=Sum('win_num'))
@@ -190,15 +183,19 @@ def ranking(request,selected_theme):
     
     # rate를 담은 list를 만들고 zip 해서 보내자
     win_rates=[]
-    for x in list_ranking_objects:        
-        win_rates.append(round(x.win_num/theme_total_play,2)*100)
+    
+    for x in list_ranking_objects:
+        try:
+            win_rates.append(round(x.win_num/theme_total_play,2)*100)
+        except ZeroDivisionError:
+            win_rates.append(0)
         
     context = {
         'zipped_list_ranking_objects' : zip(list_ranking_objects, win_rates),        
         'selected_theme' : selected_theme,
         'theme_total_play' :theme_total_play,
-        'five':five,
         'comment_objects':comment_objects,
+        
     }    
     return HttpResponse(template.render(context, request))
 
@@ -214,7 +211,7 @@ def modal(request,selected_theme):
     return HttpResponse(template.render(context, request))
 
 def test(request):
-    template = loader.get_template('test.html')
+    template = loader.get_template('comment_test.html')
     theme='안녕'
     context = {
         'theme':theme        

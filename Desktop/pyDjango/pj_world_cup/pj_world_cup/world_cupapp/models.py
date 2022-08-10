@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib import admin
 # Create your models here.
 
 class Member(models.Model):
@@ -43,11 +43,16 @@ class All_url(models.Model):
     name = models.CharField(max_length=200)
     url = models.TextField()
     win_num = models.PositiveIntegerField(default=0)
-    def __str__(self):
+    
+    def __str__(self):        
         return self.theme+" "+self.name
     def update_win_num(self):
         self.win_num = self.win_num +1
-        self.save()
+        self.save()    
+@admin.register(All_url)      
+class All_url_admin(admin.ModelAdmin):
+    list_display = ['theme', 'name', 'win_num']
+    list_display_links = ['theme', 'theme']     
 
 class Comment_test(models.Model):
     comment_num = models.BigAutoField(primary_key=True)
@@ -59,4 +64,8 @@ class Comment_test(models.Model):
     
     def update_hit_num(self):
         self.hit_num = self.hit_num +1
+        self.save()
+    
+    def minus_update_hit_num(self):
+        self.hit_num = self.hit_num -1
         self.save()

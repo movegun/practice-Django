@@ -25,5 +25,5 @@ admin.site.register(Comment_room)
 admin.site.register(Brand_member)
 admin.site.register(Urls)
 admin.site.register(Ranking)
-admin.site.register(All_url)
+
 admin.site.register(Comment_test)

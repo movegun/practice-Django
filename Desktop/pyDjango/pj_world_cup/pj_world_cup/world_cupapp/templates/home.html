@@ -21,8 +21,9 @@
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                    <input id="Searchplace" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" 
+                    onkeypress="if(event.keyCode==13) {search(); return false;}" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button" onclick="search()"><i class="fas fa-search"></i></button>
                 </div>
             </form>
             {% if request.session.login_ok_user %}
@@ -132,7 +133,7 @@
                             
                             <div id="list0" class="col-xl-12 list">
                                 {% for object in list_first_by_theme %}
-                                <div class="col-xl-3" style="display:inline; float:left;">
+                                <div id ="{{object.theme}}" name ="{{object.name}}" class="col-xl-3" style="display:inline; float:left;">
                                     <div class="card mb-3">
                                         <div class="card-header">
                                             <h3>
@@ -176,9 +177,62 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{% static 'js/scripts.js' %}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
+        {% comment %} <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="js/datatables-simple-demo.js"></script> {% endcomment %}
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+        
     </body>
+    <script language="javascript">
+        //스크립트에서 배열 쓰려면 한번더 맵핑 
+        let div_all_theme=[
+        {% for object in list_first_by_theme %}
+        "{{object.theme}}",
+        {% endfor %}
+        ]
+        let div_all_name=[
+        {% for object in list_first_by_theme %}
+        "{{object.name}}",
+        {% endfor %}
+        ]
+        
+        function search(){
+            const searched_text = document.getElementById('Searchplace').value;
+            document.getElementById('Searchplace').value="";
+
+            // 엔터키 쓸라고 억지로 만듬
+            var input_enter = true;            
+            if (searched_text=="") input_enter=false;
+            
+            // id 와 name 속성을 통해서 해당 div찾음 주의할거는 name로 찾으면 여러개 찾을수도 있어서 return값이 list
+            finded_div1 = document.getElementById(searched_text);
+
+            list_finded_div2 = document.getElementsByName(searched_text);
+            finded_div2 = list_finded_div2[0]
+            
+            for(var i=0; i< div_all_theme.length ; i++){
+                div_in_html1=document.getElementById(div_all_theme[i]);
+
+                list_div_in_html2=document.getElementsByName(div_all_name[i]);
+                div_in_html2=list_div_in_html2[0];
+
+                console.log(i+"번째바퀴 시작")
+
+
+                // style="display:none" 빈칸 땡겨           실체 존재X
+                // style="visibilit:hidden" 빈칸 안땡겨     실체 존재O but 보이지않음
+                if(div_in_html1 == finded_div1 || div_in_html2 == finded_div2 || input_enter==false ){    
+                    console.log("검색과 똑같은놈 찾음")
+                    div_in_html1.style="display:inline; float:left;"
+                    div_in_html2.style="display:inline; float:left;"                    
+                }else{
+                    console.log("검색과 다른놈 찾음")
+                    div_in_html1.style="display:none; float:left;";
+                    div_in_html2.style="display:none; float:left;"
+                }
+                
+                console.log(i+"번째바퀴 끝")
+            }    
+        }
+    </script>
 </html>
