@@ -1,0 +1,55 @@
+<head>
+    
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <!-- jquery only -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- js only -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+
+
+<body>
+    <form role="form" >   
+        <div class="modal-body" style="padding:10px">
+            <div class="row">
+            <div class="col-sm-12">
+            <select class="form-control" id="insert_theme" name="insert_theme" data-op="open" data-u="testpage">
+                <option value="empty_theme">추가하고싶은 키워드의 테마를 선택하세요</option>
+                {% for object in list_first_by_theme %}            
+                
+                <option value="{{object.theme}}">{{object.theme}}</option>
+                                         
+                {% endfor %}
+                 
+            </select>
+            <input id ="insert_name" name="user_input"></input>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      <button type="button" id="do_insert" class="btn btn-primary" data-bs-dismiss="modal" >진행하기</button>
+      
+    </div>
+    
+    <form >
+</body>
+<script language="javascript" type="text/javascript">
+
+    $('#do_insert').click(function() {
+        var theme = $("#insert_theme").val();
+        var new_keyword = $("#insert_name").val();
+        console.log(theme)
+        console.log(new_keyword)
+        new_keyword = decodeURI(new_keyword);
+        if(theme=="empty_theme"){
+            alert("테마를 선택하세요");
+            document.getElementById('insert_name').value="";
+            document.getElementById('insert_name').focus();
+            
+            return;
+        }
+        window.location.href ="/insert/"+theme+"/"+new_keyword;
+        //window.location.href = $('#selRound').attr('data-u');
+	});
+
+
+</script>

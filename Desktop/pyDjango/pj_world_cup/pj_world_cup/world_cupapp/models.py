@@ -52,7 +52,7 @@ class All_url(models.Model):
 @admin.register(All_url)      
 class All_url_admin(admin.ModelAdmin):
     list_display = ['theme', 'name', 'win_num']
-    list_display_links = ['theme', 'theme']     
+    list_display_links = ['theme', 'name']     
 
 class Comment_test(models.Model):
     comment_num = models.BigAutoField(primary_key=True)
